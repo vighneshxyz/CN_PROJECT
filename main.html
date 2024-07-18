@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Header with Navigation Bar</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="header-outer">
+      <div class="header-inner responsive-wrapper">
+        <div class="header-logo">
+          <img src="https://assets.codepen.io/285131/acme-2.svg" />
+        </div>
+        <nav class="header-navigation">
+          <a href="main.html">Home</a>
+          <a href="index.html">Simulation</a>
+          <a href="developer.html">About Us</a>
+          <button>Menu</button>
+        </nav>
+      </div>
+    </header>
+    <main class="main">
+      <div class="main-content responsive-wrapper">
+        <article class="widget">
+          <h2>Pure ALOHA Protocol 📡</h2>
+          <p>
+            Pure ALOHA is a simple random access protocol used in computer networks. It is designed for shared communication channels where multiple stations can transmit data.
+          </p>
+          <p>
+            In Pure ALOHA, a station can send a frame at any time. However, collisions may occur if two or more stations attempt to transmit simultaneously. Collisions are detected through feedback mechanisms, and retransmission is required if a collision occurs.
+          </p>
+          <p>
+            The efficiency of Pure ALOHA is relatively low due to the likelihood of collisions. To address this, Slotted ALOHA was introduced, dividing time into slots to reduce the chances of collisions.
+          </p>
+        </article>
+      </div>
+    </main>
+  </body>
+</html>

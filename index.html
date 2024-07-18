@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Moving Objects Along X-Axis</title>
+  <style>
+    :root {
+      --packetTopBase: 25px;
+    }
+    body{
+        background-color: black;
+    }
+    .movingObject {
+      position: absolute;
+      width: 100px;
+      height: 40px;
+    }
+
+    #movingObject1,#movingObject2,#movingObject3,#movingObject4,#movingObject5,#movingObject6{
+      background-color: yellow;
+      margin-left: 303px;
+    }
+
+    #movingObject1 {
+      top: var(--packetTopBase); 
+    }
+
+    #movingObject2 {
+      top: calc(var(--packetTopBase) + 85px);
+    }
+    #movingObject3 {
+      top: calc(var(--packetTopBase) + 165px);
+    }
+    #movingObject4 {
+      top: calc(var(--packetTopBase) + 245px);
+    }
+    #movingObject5 {
+      top: calc(var(--packetTopBase) + 335px);
+    }
+    #movingObject6 {
+      top: calc(var(--packetTopBase) + 415px);
+    }
+    img{
+        max-width: 8%;
+        margin-bottom: 2px;
+    }
+    .row{
+        display: flex;
+    }
+    .start-button{
+        margin: 1.5rem;
+        background-color: rgb(22, 235, 22);
+        border: none;
+        color: white;
+        border-radius: 1rem;
+        padding: 0.1rem;
+        width: 6rem;
+        cursor: pointer;
+    }
+    .destination{
+        position: absolute;
+        height: 480px;
+        width: 200px;
+        background-color: blue;
+        right: 0;
+        top: 0;
+        margin-right: 50px;
+        margin-top: 15px;
+        border-radius: 2rem;
+    }
+    .destination-span{
+        position: absolute;
+        margin-top: 200px;
+        margin-left: 40px;
+        font-size: 1.5rem;
+        color: white;
+        font-weight: bolder;
+    }
+    .vertical-line{
+        border-left: 2px solid yellow;
+        height: 500px;
+        position: absolute;
+        top: 0;
+        margin-top: 10px;
+        margin-left: 400px;
+    }
+    .run-simulation{
+        margin-left: 600px;
+        margin-top: 30px;
+        padding: 1rem;
+        width: 8rem;
+        border-radius: 1rem;
+        border: none;
+        background-color: red;
+        color: white;
+        font-size: 1rem;
+        font-weight: bolder;
+        cursor: pointer;
+    }
+    .start-button:disabled{
+        background-color: red;
+    }
+    #collision-line{
+      position: absolute;
+      height: 100vh;
+      background-color: red;
+      width: 4px;
+      top: 0;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+    
+    <div class="container">
+        <div class="row">
+            <button class="start-button" id="button1" disabled  onclick="startMoving(0)">Start</button>
+            <img src="computer.jpg" alt="computer">
+        </div>
+        <div class="row">
+            <button class="start-button" id="button2" disabled  onclick="startMoving(1)">Start</button>
+            <img src="computer.jpg" alt="computer">
+        </div>
+        <div class="row">
+            <button class="start-button" id="button3" disabled  onclick="startMoving(2)">Start</button>
+            <img src="computer.jpg" alt="computer">
+        </div>
+        <div class="row">
+            <button class="start-button" id="button4" disabled  onclick="startMoving(3)">Start</button>
+            <img src="computer.jpg" alt="computer">
+        </div>
+        <div class="row">
+            <button class="start-button" id="button5" disabled  onclick="startMoving(4)">Start</button>
+            <img src="computer.jpg" alt="computer">
+        </div>
+        <div class="row">
+            <button class="start-button" id="button6" disabled  onclick="startMoving(5)">Start</button>
+            <img src="computer.jpg" alt="computer">
+        </div>
+    </div>
+
+    <div class="vertical-line"></div>
+
+<div id="movingObject1" class="movingObject"></div>
+<div id="movingObject2" class="movingObject"></div>
+<div id="movingObject3" class="movingObject"></div>
+<div id="movingObject4" class="movingObject"></div>
+<div id="movingObject5" class="movingObject"></div>
+<div id="movingObject6" class="movingObject"></div>
+
+<div id="collision-line"></div>
+
+<div class="destination">
+    <span class="destination-span">Destination</span>
+</div>
+
+<button class="run-simulation" id="simulateButton">
+    Simulation
+</button>
+
+<script>
+
+  function makeButtonActive(){
+    for(let i=0;i<6;i++){
+      document.getElementById('button'+(i+1)).style.backgroundColor = "green";
+      document.getElementById('button'+(i+1)).disabled = false;
+    }
+  }
+
+  document.getElementById("simulateButton").onclick = function(){
+    makeButtonActive();
+  }
+
+
+
+  const movingObject = [];
+  const positionX = [];
+  for(let i=0;i<6;i++){
+    positionX[i] = 303;
+  }
+  const speed = [5,4,8,11,12,2];
+
+  for (let i = 0; i < 6; i++) {
+    movingObject[i] = document.getElementById("movingObject" + (i + 1));
+  }
+
+  let intervalId = [0,0,0,0,0,0];
+
+  function startMoving(index) {
+    movingObject[index].style.backgroundColor="green";
+    
+    intervalId[index] = setInterval(function () {
+      positionX[index] += speed[index];
+      movingObject[index].style.marginLeft = positionX[index] + "px";
+
+      if (positionX[index] >= 1100) {
+        positionX[index] = 303;
+        movingObject[index].style.marginLeft = 303+"px";
+        movingObject[index].style.backgroundColor = "yellow";
+        clearInterval(intervalId[index]);
+        return;
+      }
+      if(positionX[index]>403){
+        for (let i = 0; i < 6; i++) {
+        if (i !== index && positionX[index] < positionX[i] + movingObject[i].clientWidth &&
+              positionX[index] + movingObject[index].clientWidth > positionX[i]) {
+              movingObject[index].style.backgroundColor = "red";
+              movingObject[i].style.backgroundColor = "red";
+              document.getElementById("collision-line").style.marginLeft = (movingObject[index].clientWidth+positionX[index]) + "px";
+              document.getElementById("collision-line").style.display = "block";
+              let kgf = new Audio('siren.mp3');
+              kgf.play();
+              setTimeout(function(){
+                alert('collision detected');
+                kgf.pause();
+                movingObject[index].style.backgroundColor = "yellow";
+                movingObject[i].style.backgroundColor = "yellow";
+                movingObject[index].style.marginLeft = 303+"px";
+                movingObject[i].style.marginLeft = 303+"px";
+                positionX[index] = 303;
+                positionX[i] = 303;
+                document.getElementById("collision-line").style.display = "none";
+                clearInterval(intervalId[index]);
+                clearInterval(intervalId[i]);
+              },0);
+              return;
+        }
+      }
+      }
+    }, 50);
+  }
+</script>
+
+</body>
+</html>
